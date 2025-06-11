@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BADASS FUFA Channels</title>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #e74c3c;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+        }
+
+        .channel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .channel-card {
+            background: #1a1a1a;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            border: 1px solid #333;
+        }
+
+        .channel-card:hover {
+            transform: translateY(-3px);
+            border-color: #e74c3c;
+        }
+
+        .channel-link {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            display: block;
+            padding: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .channel-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚽ BADASS FUFA Channels</h1>
+        <div class="channel-grid" id="channelList"></div>
+    </div>
+
+    <script>
+        const channels = [
+            'USANETWORK', 'NBC', 'UNIVERSO', 'TELEMUNDO', 'SPORSTAR1', 'SPORSTAR2',
+            'CANALE5', 'TNT_1_GB', 'TNT_2_GB', 'TNT_3_GB', 'TNT_4_GB', 'TNT_5_GB',
+            'DAZN-LALIGA', 'DAZN1', 'DAZN2', 'DAZN3', 'DAZN4', 'ZIGGO', 'ARENA1P',
+            'ARENA2P', 'ARENA3P', 'ARENA4P', 'ARENA5P', 'ARENA6P', 'ARENA9P', 'ESPN1',
+            'ESPN2', 'ESPN3', 'ESPN4', 'ESPN5', 'MNC', 'ESPN6', 'ESPN7', 'ESPNNL1',
+            'SKYSPORTS', 'SKYSPORTS2', 'SKYSPORTS_LALIGA', 'SKYSPORTS_BUDESLIGA',
+            'SKYSPORTS_LIVE1', 'SKYSPORTS_LIVE2', 'SKYSPORTS_LIVE3', 'SKYSPORTS_LIVE4',
+            'SKYSPORTS_BUDESLIGA2', 'FOXSPORTS', 'FOXSPORTS2', 'FOXSPORTS3',
+            'FOXSPORTS_PREMIUM', 'TUDN', 'ZIGGO1', 'ZIGGO2', 'ZIGGO3', 'ZIGGO_SELECT',
+            'ZIGGO_SELECT_2', 'ZIGGO_SPORT'
+        ];
+
+        const channelList = document.getElementById('channelList');
+
+        channels.forEach(channel => {
+            const card = document.createElement('div');
+            card.className = 'channel-card';
+            
+            const link = document.createElement('a');
+            link.className = 'channel-link';
+            link.href = `futem2.pages.dev.html?id=${channel}`;
+            link.target = '_blank';
+            link.textContent = channel.replace(/_/g, ' ');
+            
+            card.appendChild(link);
+            channelList.appendChild(card);
+        });
+
+        // Optional: Add click tracking
+        document.querySelectorAll('.channel-link').forEach(link => {
+            link.addEventListener('click', () => {
+                console.log(`Channel selected: ${link.textContent}`);
+            });
+        });
+    </script>
+</body>
+</html>
