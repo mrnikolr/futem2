@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BADASS FUFA Channels</title>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { color: #e74c3c; text-align: center; margin-bottom: 40px; }
+        .channel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+        .channel-card {
+            background: #1a1a1a;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s;
+            border: 1px solid #333;
+        }
+        .channel-card:hover {
+            transform: translateY(-3px);
+            border-color: #e74c3c;
+        }
+        .channel-link {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            display: block;
+            padding: 10px 0 0 0;
+        }
+        .channel-logo {
+            width: 70px;
+            height: 40px;
+            object-fit: contain;
+            background: #222;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .default-logo {
+            font-size: 40px;
+            color: #888;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚽ BADASS FUFA Channels</h1>
+        <div class="channel-grid" id="channelList"></div>
+    </div>
+    <script>
+        // Channel IDs
+        const channels = [
+            'USANETWORK', 'NBC', 'UNIVERSO', 'TELEMUNDO', 'SPORSTAR1', 'SPORSTAR2',
+            'CANALE5', 'TNT_1_GB', 'TNT_2_GB', 'TNT_3_GB', 'TNT_4_GB', 'TNT_5_GB',
+            'DAZN-LALIGA', 'DAZN1', 'DAZN2', 'DAZN3', 'DAZN4', 'ZIGGO', 'ARENA1P',
+            'ARENA2P', 'ARENA3P', 'ARENA4P', 'ARENA5P', 'ARENA6P', 'ARENA9P', 'ESPN1',
+            'ESPN2', 'ESPN3', 'ESPN4', 'ESPN5', 'MNC', 'ESPN6', 'ESPN7', 'ESPNNL1',
+            'SKYSPORTS', 'SKYSPORTS2', 'SKYSPORTS_LALIGA', 'SKYSPORTS_BUDESLIGA',
+            'SKYSPORTS_LIVE1', 'SKYSPORTS_LIVE2', 'SKYSPORTS_LIVE3', 'SKYSPORTS_LIVE4',
+            'SKYSPORTS_BUDESLIGA2', 'FOXSPORTS', 'FOXSPORTS2', 'FOXSPORTS3',
+            'FOXSPORTS_PREMIUM', 'TUDN', 'ZIGGO1', 'ZIGGO2', 'ZIGGO3', 'ZIGGO_SELECT',
+            'ZIGGO_SELECT_2', 'ZIGGO_SPORT'
+        ];
+
+        // Logo URLs for each channel (add or update as needed)
+        const logos = {
+            'USANETWORK': 'https://upload.wikimedia.org/wikipedia/commons/6/6b/USA_Network_2016.svg',
+            'NBC': 'https://upload.wikimedia.org/wikipedia/commons/3/3f/NBC_logo.svg',
+            'UNIVERSO': 'https://upload.wikimedia.org/wikipedia/commons/6/6c/Universo_logo_2015.png',
+            'TELEMUNDO': 'https://upload.wikimedia.org/wikipedia/commons/8/8b/Telemundo_logo_2018.svg',
+            'SPORSTAR1': 'https://upload.wikimedia.org/wikipedia/commons/9/9e/Star_Sports_logo.png',
+            'SPORSTAR2': 'https://upload.wikimedia.org/wikipedia/commons/9/9e/Star_Sports_logo.png',
+            'CANALE5': 'https://upload.wikimedia.org/wikipedia/commons/9/9d/Canale_5_-_Logo_2018.svg',
+            'TNT_1_GB': 'https://upload.wikimedia.org/wikipedia/commons/6/6a/TNT_%28TV_Channel%29_logo.svg',
+            'TNT_2_GB': 'https://upload.wikimedia.org/wikipedia/commons/6/6a/TNT_%28TV_Channel%29_logo.svg',
+            'TNT_3_GB': 'https://upload.wikimedia.org/wikipedia/commons/6/6a/TNT_%28TV_Channel%29_logo.svg',
+            'TNT_4_GB': 'https://upload.wikimedia.org/wikipedia/commons/6/6a/TNT_%28TV_Channel%29_logo.svg',
+            'TNT_5_GB': 'https://upload.wikimedia.org/wikipedia/commons/6/6a/TNT_%28TV_Channel%29_logo.svg',
+            'DAZN-LALIGA': 'https://upload.wikimedia.org/wikipedia/commons/6/6a/DAZN_logo.svg',
+            'DAZN1': 'https://upload.wikimedia.org/wikipedia/commons/6/6a/DAZN_logo.svg',
+            'DAZN2': 'https://upload.wikimedia.org/wikipedia/commons/6/6a/DAZN_logo.svg',
+            'DAZN3': 'https://upload.wikimedia.org/wikipedia/commons/6/6a/DAZN_logo.svg',
+            'DAZN4': 'https://upload.wikimedia.org/wikipedia/commons/6/6a/DAZN_logo.svg',
+            'ZIGGO': 'https://upload.wikimedia.org/wikipedia/commons/3/3c/Ziggo_Sport_logo_2015.png',
+            'ARENA1P': 'https://upload.wikimedia.org/wikipedia/commons/7/7e/Arena_Sport_logo.png',
+            'ARENA2P': 'https://upload.wikimedia.org/wikipedia/commons/7/7e/Arena_Sport_logo.png',
+            'ARENA3P': 'https://upload.wikimedia.org/wikipedia/commons/7/7e/Arena_Sport_logo.png',
+            'ARENA4P': 'https://upload.wikimedia.org/wikipedia/commons/7/7e/Arena_Sport_logo.png',
+            'ARENA5P': 'https://upload.wikimedia.org/wikipedia/commons/7/7e/Arena_Sport_logo.png',
+            'ARENA6P': 'https://upload.wikimedia.org/wikipedia/commons/7/7e/Arena_Sport_logo.png',
+            'ARENA9P': 'https://upload.wikimedia.org/wikipedia/commons/7/7e/Arena_Sport_logo.png',
+            'ESPN1': 'https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg',
+            'ESPN2': 'https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg',
+            'ESPN3': 'https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg',
+            'ESPN4': 'https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg',
+            'ESPN5': 'https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg',
+            'MNC': 'https://upload.wikimedia.org/wikipedia/commons/6/6c/MNC_Media_logo.png',
+            'ESPN6': 'https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg',
+            'ESPN7': 'https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg',
+            'ESPNNL1': 'https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg',
+            'SKYSPORTS': 'https://upload.wikimedia.org/wikipedia/commons/6/6a/Sky_Sports_logo_2020.svg',
+            'SKYSPORTS2': 'https://upload.wikimedia.org/wikipedia/commons/6/6a/Sky_Sports_logo_2020.svg',
+            'SKYSPORTS_LALIGA': 'https://upload.wikimedia.org/wikipedia/commons/6/6a/Sky_Sports_logo_2020.svg',
+            'SKYSPORTS_BUDESLIGA': 'https://upload.wikimedia.org/wikipedia/commons/6/6a/Sky_Sports_logo_2020.svg',
+            'SKYSPORTS_LIVE1': 'https://upload.wikimedia.org/wikipedia/commons/6/6a/Sky_Sports_logo_2020.svg',
+            'SKYSPORTS_LIVE2': 'https://upload.wikimedia.org/wikipedia/commons/6/6a/Sky_Sports_logo_2020.svg',
+            'SKYSPORTS_LIVE3': 'https://upload.wikimedia.org/wikipedia/commons/6/6a/Sky_Sports_logo_2020.svg',
+            'SKYSPORTS_LIVE4': 'https://upload.wikimedia.org/wikipedia/commons/6/6a/Sky_Sports_logo_2020.svg',
+            'SKYSPORTS_BUDESLIGA2': 'https://upload.wikimedia.org/wikipedia/commons/6/6a/Sky_Sports_logo_2020.svg',
+            'FOXSPORTS': 'https://upload.wikimedia.org/wikipedia/commons/6/6b/Fox_Sports_logo.svg',
+            'FOXSPORTS2': 'https://upload.wikimedia.org/wikipedia/commons/6/6b/Fox_Sports_logo.svg',
+            'FOXSPORTS3': 'https://upload.wikimedia.org/wikipedia/commons/6/6b/Fox_Sports_logo.svg',
+            'FOXSPORTS_PREMIUM': 'https://upload.wikimedia.org/wikipedia/commons/6/6b/Fox_Sports_logo.svg',
+            'TUDN': 'https://upload.wikimedia.org/wikipedia/commons/1/1a/TUDN_logo_2019.png',
+            'ZIGGO1': 'https://upload.wikimedia.org/wikipedia/commons/3/3c/Ziggo_Sport_logo_2015.png',
+            'ZIGGO2': 'https://upload.wikimedia.org/wikipedia/commons/3/3c/Ziggo_Sport_logo_2015.png',
+            'ZIGGO3': 'https://upload.wikimedia.org/wikipedia/commons/3/3c/Ziggo_Sport_logo_2015.png',
+            'ZIGGO_SELECT': 'https://upload.wikimedia.org/wikipedia/commons/3/3c/Ziggo_Sport_logo_2015.png',
+            'ZIGGO_SELECT_2': 'https://upload.wikimedia.org/wikipedia/commons/3/3c/Ziggo_Sport_logo_2015.png',
+            'ZIGGO_SPORT': 'https://upload.wikimedia.org/wikipedia/commons/3/3c/Ziggo_Sport_logo_2015.png'
+        };
+
+        const channelList = document.getElementById('channelList');
+
+        channels.forEach(channel => {
+            const card = document.createElement('div');
+            card.className = 'channel-card';
+
+            // Logo
+            if (logos[channel]) {
+                const img = document.createElement('img');
+                img.src = logos[channel];
+                img.alt = channel;
+                img.className = 'channel-logo';
+                card.appendChild(img);
+            } else {
+                // Default icon (SVG)
+                const svg = document.createElement('div');
+                svg.className = 'default-logo';
+                svg.innerHTML = '📺';
+                card.appendChild(svg);
+            }
+
+            // Link
+            const link = document.createElement('a');
+            link.className = 'channel-link';
+            link.href = `your_player_page.html?id=${channel}`;
+            link.target = '_blank';
+            link.textContent = channel.replace(/_/g, ' ');
+            card.appendChild(link);
+
+            channelList.appendChild(card);
+        });
+    </script>
+</body>
+</html>
